@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pravallika Dasari — Senior AI/ML Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Caveat:wght@600;700&family=Archivo+Black&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #06060a;
+    --bg-soft: #0d0e15;
+    --card: #12131c;
+    --card-border: #23242f;
+    --gold: #f4b942;
+    --gold-soft: rgba(244,185,66,0.12);
+    --green: #4ade80;
+    --text: #eceef2;
+    --muted: #9a9bab;
+    --font: 'Space Grotesk', sans-serif;
+    --font-black: 'Archivo Black', sans-serif;
+    --font-script: 'Caveat', cursive;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font);
+    overflow-x:hidden;
+    line-height:1.6;
+  }
+  canvas#stars{
+    position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;
+  }
+  .wrap{position:relative;z-index:1;}
+  a{color:inherit;text-decoration:none;}
+
+  /* NAV */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:22px 6vw;
+    background:rgba(6,6,10,0.65);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(255,255,255,0.05);
+  }
+  .logo{font-family:var(--font-script);font-size:28px;color:var(--gold);}
+  .navlinks{display:flex;gap:32px;font-size:14px;letter-spacing:0.5px;color:var(--muted);}
+  .navlinks a:hover{color:var(--gold);}
+  .navlinks{display:flex;}
+  @media (max-width:720px){ .navlinks{display:none;} }
+
+  section{
+    position:relative;z-index:1;
+    padding:120px 6vw 100px;
+    max-width:1200px;
+    margin:0 auto;
+  }
+
+  /* HERO */
+  .hero{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding-top:140px;
+  }
+  .badge{
+    display:inline-flex;align-items:center;gap:8px;
+    border:1px solid rgba(74,222,128,0.4);
+    background:rgba(74,222,128,0.08);
+    color:var(--green);
+    font-size:12px;letter-spacing:1.5px;
+    padding:6px 14px;border-radius:30px;
+    width:fit-content;margin-bottom:24px;
+    text-transform:uppercase;
+  }
+  .badge::before{
+    content:'';width:7px;height:7px;border-radius:50%;background:var(--green);
+    box-shadow:0 0 8px var(--green);
+  }
+  .hero h1{
+    font-family:var(--font-black);
+    font-size:clamp(48px, 9vw, 108px);
+    line-height:0.95;
+    letter-spacing:-1px;
+    text-transform:uppercase;
+  }
+  .hero h1 span{color:var(--gold);}
+  .hero .tagline{
+    font-size:clamp(16px,2.2vw,22px);
+    color:var(--muted);
+    margin-top:18px;
+    font-weight:500;
+    letter-spacing:0.3px;
+  }
+  .hero .tagline b{color:var(--text);font-weight:600;}
+  .pills{
+    display:flex;flex-wrap:wrap;gap:10px;margin-top:28px;max-width:640px;
+  }
+  .pill{
+    border:1px solid var(--card-border);
+    background:var(--card);
+    color:var(--muted);
+    font-size:12.5px;
+    padding:8px 16px;
+    border-radius:30px;
+    letter-spacing:0.5px;
+    transition:all .2s;
+  }
+  .pill:hover{border-color:var(--gold);color:var(--gold);}
+  .cta-row{display:flex;gap:16px;margin-top:40px;flex-wrap:wrap;}
+  .btn{
+    padding:14px 28px;border-radius:8px;font-size:14px;font-weight:600;
+    letter-spacing:0.5px;text-transform:uppercase;
+    display:inline-flex;align-items:center;gap:8px;
+    transition:all .25s;
+  }
+  .btn-primary{background:var(--gold);color:#0a0a0a;}
+  .btn-primary:hover{box-shadow:0 0 24px rgba(244,185,66,0.5);transform:translateY(-2px);}
+  .btn-outline{border:1px solid var(--card-border);color:var(--text);}
+  .btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+
+  /* SECTION HEADER */
+  .sec-head{
+    display:flex;align-items:baseline;gap:18px;margin-bottom:46px;position:relative;
+  }
+  .sec-num{
+    font-family:var(--font-black);
+    font-size:80px;
+    color:transparent;
+    -webkit-text-stroke:1.5px rgba(255,255,255,0.09);
+    position:absolute;
+    top:-34px;left:-10px;
+    z-index:-1;
+    user-select:none;
+  }
+  .sec-kicker{font-family:var(--font-script);font-size:26px;color:var(--gold);}
+  .sec-title{
+    font-family:var(--font-black);
+    font-size:clamp(28px,4vw,42px);
+    text-transform:uppercase;
+    letter-spacing:-0.5px;
+  }
+
+  /* ABOUT */
+  .about-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:60px;}
+  @media (max-width:860px){ .about-grid{grid-template-columns:1fr;} }
+  .about-text p{color:var(--muted);font-size:16.5px;margin-bottom:18px;}
+  .about-text strong{color:var(--text);}
+  .about-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px;}
+  .tag-solid{
+    background:var(--gold-soft);
+    border:1px solid rgba(244,185,66,0.35);
+    color:var(--gold);
+    font-size:12px;font-weight:600;
+    padding:8px 16px;border-radius:6px;
+    letter-spacing:0.5px;text-transform:uppercase;
+  }
+  .stat-box{
+    background:var(--card);border:1px solid var(--card-border);
+    border-radius:14px;padding:28px;
+    display:flex;flex-direction:column;gap:22px;
+    height:fit-content;
+  }
+  .stat{display:flex;flex-direction:column;}
+  .stat .num{font-family:var(--font-black);font-size:34px;color:var(--gold);}
+  .stat .label{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;}
+
+  /* SKILLS */
+  .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;}
+  .skill-card{
+    background:var(--card);border:1px solid var(--card-border);
+    border-radius:14px;padding:26px;
+    transition:border-color .25s, transform .25s;
+  }
+  .skill-card:hover{border-color:var(--gold);transform:translateY(-4px);}
+  .skill-card h3{
+    font-size:15px;color:var(--gold);text-transform:uppercase;
+    letter-spacing:0.8px;margin-bottom:16px;
+  }
+  .skill-tags{display:flex;flex-wrap:wrap;gap:8px;}
+  .skill-tags span{
+    font-size:12px;color:var(--muted);
+    border:1px solid var(--card-border);
+    padding:5px 11px;border-radius:20px;
+  }
+
+  /* EXPERIENCE TIMELINE */
+  .timeline{position:relative;padding-left:36px;}
+  .timeline::before{
+    content:'';position:absolute;left:6px;top:6px;bottom:6px;width:2px;
+    background:linear-gradient(var(--gold), transparent);
+  }
+  .tl-item{position:relative;margin-bottom:48px;}
+  .tl-item:last-child{margin-bottom:0;}
+  .tl-dot{
+    position:absolute;left:-36px;top:4px;width:14px;height:14px;border-radius:50%;
+    background:var(--bg);border:2px solid var(--gold);
+  }
+  .tl-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;justify-content:space-between;}
+  .tl-role{font-size:20px;font-weight:700;color:var(--text);}
+  .tl-company{color:var(--gold);font-weight:600;}
+  .tl-meta{color:var(--muted);font-size:13px;letter-spacing:0.3px;}
+  .tl-project{color:var(--muted);font-size:14px;font-style:italic;margin-top:4px;}
+  .tl-bullets{margin-top:14px;padding-left:20px;color:var(--muted);font-size:14.5px;}
+  .tl-bullets li{margin-bottom:8px;}
+  .tl-bullets strong{color:var(--text);}
+  .tl-tech{margin-top:14px;display:flex;flex-wrap:wrap;gap:6px;}
+  .tl-tech span{
+    font-size:11px;color:var(--muted);border:1px solid var(--card-border);
+    padding:4px 10px;border-radius:20px;
+  }
+
+  /* EDUCATION */
+  .edu-card{
+    background:var(--card);border:1px solid var(--card-border);
+    border-radius:14px;padding:30px;display:flex;justify-content:space-between;
+    flex-wrap:wrap;gap:16px;
+  }
+  .edu-card h3{font-size:20px;color:var(--text);}
+  .edu-card .school{color:var(--gold);font-weight:600;margin-top:4px;}
+  .edu-card .loc{color:var(--muted);font-size:13px;margin-top:6px;}
+  .edu-year{font-family:var(--font-black);font-size:26px;color:var(--gold);align-self:center;}
+
+  /* CONTACT */
+  .contact-box{
+    background:var(--card);border:1px solid var(--card-border);
+    border-radius:18px;padding:52px 6vw;text-align:center;
+  }
+  .contact-box h2{
+    font-family:var(--font-black);font-size:clamp(26px,4vw,40px);
+    text-transform:uppercase;margin-bottom:14px;
+  }
+  .contact-box p{color:var(--muted);margin-bottom:30px;}
+  .contact-links{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;}
+
+  footer{
+    text-align:center;padding:36px 6vw 50px;color:var(--muted);font-size:13px;
+    position:relative;z-index:1;
+  }
+  footer span{color:var(--gold);}
+
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="wrap">
+  <nav>
+    <div class="logo">Pravallika</div>
+    <div class="navlinks">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="badge">Open to Work</div>
+    <h1>Pravallika<br><span>Dasari</span></h1>
+    <div class="tagline"><b>Senior AI/ML Engineer</b> · Data Engineer · Agentic AI &amp; GenAI Systems</div>
+    <div class="pills">
+      <div class="pill">Python</div>
+      <div class="pill">LangGraph</div>
+      <div class="pill">LangChain</div>
+      <div class="pill">RAG</div>
+      <div class="pill">Azure / AWS / GCP</div>
+      <div class="pill">MLOps</div>
+      <div class="pill">XGBoost</div>
+    </div>
+    <div class="cta-row">
+      <a href="#experience" class="btn btn-primary">View Experience</a>
+      <a href="#contact" class="btn btn-outline">Contact Me</a>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <span class="sec-kicker">Get to know me</span>
+    </div>
+    <h2 class="sec-title reveal" style="margin-bottom:36px;">Who I Am</h2>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>Senior <strong>AI/ML Engineer and Data Engineer</strong> with <strong>9+ years</strong> of experience building and delivering production-grade AI systems across financial services, healthcare, insurance, and retail. I own the full lifecycle — from designing large-scale data pipelines and training machine learning models to deploying real-time APIs in regulated, high-stakes environments where reliability and explainability are non-negotiable.</p>
+        <p>I bring a strong engineering mindset to data science: building fraud detection and risk scoring systems that outperform rules-based baselines, and delivering NLP pipelines that automate high-volume manual workflows at scale. Currently leading <strong>enterprise Agentic AI development</strong> — architecting multi-agent systems, building RAG pipelines grounded in internal knowledge bases, and establishing LLM evaluation and safety frameworks that make generative AI trustworthy in production.</p>
+        <p>Equally comfortable across <strong>Azure, AWS, and GCP</strong> cloud-native infrastructure — translating complex business problems into AI solutions that teams rely on.</p>
+        <div class="about-tags">
+          <span class="tag-solid">Agentic AI</span>
+          <span class="tag-solid">RAG Pipelines</span>
+          <span class="tag-solid">Fraud Detection</span>
+          <span class="tag-solid">LLM Evaluation</span>
+          <span class="tag-solid">Cloud Native</span>
+        </div>
+      </div>
+      <div class="stat-box reveal">
+        <div class="stat"><span class="num">9+</span><span class="label">Years of Experience</span></div>
+        <div class="stat"><span class="num">5</span><span class="label">Industries Served</span></div>
+        <div class="stat"><span class="num">3</span><span class="label">Cloud Platforms</span></div>
+        <div class="stat"><span class="num">01</span><span class="label">Agentic AI Platform Led</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <span class="sec-kicker">What I work with</span>
+    </div>
+    <h2 class="sec-title reveal" style="margin-bottom:36px;">Skills &amp; Tech Stack</h2>
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <h3>Agentic AI &amp; GenAI</h3>
+        <div class="skill-tags">
+          <span>LangGraph</span><span>LangChain</span><span>LlamaIndex</span><span>Azure OpenAI GPT-4o</span>
+          <span>RAG Pipelines</span><span>FAISS</span><span>Pinecone</span><span>Chroma DB</span>
+          <span>Prompt Engineering</span><span>Guardrails AI</span><span>MCP</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <h3>LLM Evaluation &amp; Safety</h3>
+        <div class="skill-tags">
+          <span>RAGAS</span><span>DeepEval</span><span>LLM-as-Judge</span><span>MLflow Eval</span>
+          <span>Hallucination Detection</span><span>Responsible AI</span><span>LLMOps</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <h3>Machine Learning</h3>
+        <div class="skill-tags">
+          <span>Scikit-learn</span><span>XGBoost</span><span>LightGBM</span><span>PyTorch</span>
+          <span>TensorFlow</span><span>SHAP</span><span>ARIMA / Prophet</span><span>A/B Testing</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <h3>NLP &amp; Deep Learning</h3>
+        <div class="skill-tags">
+          <span>Hugging Face</span><span>BERT</span><span>LayoutLM</span><span>spaCy</span>
+          <span>NER</span><span>Document Intelligence</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <h3>Data Engineering</h3>
+        <div class="skill-tags">
+          <span>PySpark</span><span>Apache Spark</span><span>Airflow</span><span>Kafka</span>
+          <span>dbt</span><span>Delta Lake</span><span>Great Expectations</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <h3>Cloud &amp; MLOps</h3>
+        <div class="skill-tags">
+          <span>Azure</span><span>AWS</span><span>GCP</span><span>MLflow</span>
+          <span>Kubeflow</span><span>SageMaker</span><span>Docker</span><span>Kubernetes</span><span>Terraform</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <span class="sec-kicker">Where I've been</span>
+    </div>
+    <h2 class="sec-title reveal" style="margin-bottom:46px;">Experience</h2>
+    <div class="timeline">
+
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-head">
+          <div><span class="tl-role">Senior Data AI/ML Engineer</span> — <span class="tl-company">Fifth Third Bank</span></div>
+          <div class="tl-meta">Jan 2024 – Present · Cincinnati, OH</div>
+        </div>
+        <div class="tl-project">Enterprise Agentic AI Platform — LangGraph, RAG, LLM Governance &amp; ML Fraud Detection</div>
+        <ul class="tl-bullets">
+          <li>Contributed to designing and building <strong>agentic AI systems</strong> and production ML pipelines for commercial banking, delivering GenAI capabilities in a regulated financial environment.</li>
+          <li>Built agentic workflows with <strong>LangGraph &amp; LangChain</strong>, including multi-step tool-use pipelines with human-in-the-loop approval gates.</li>
+          <li>Contributed to a production <strong>RAG system</strong> over internal knowledge bases using Azure AI Search and FAISS, with role-based access controls.</li>
+          <li>Supported LLM evaluation infrastructure using <strong>RAGAS and LangSmith</strong>, establishing baseline quality metrics and automated regression checks.</li>
+          <li>Contributed to real-time fraud detection pipelines using <strong>XGBoost</strong> on Azure Databricks, processing transaction streams via Azure Event Hubs.</li>
+        </ul>
+        <div class="tl-tech"><span>LangGraph</span><span>Azure OpenAI</span><span>RAGAS</span><span>FAISS</span><span>XGBoost</span><span>AKS</span><span>Airflow</span></div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-head">
+          <div><span class="tl-role">Senior AI/ML Data Engineer</span> — <span class="tl-company">Centene Corporation</span></div>
+          <div class="tl-meta">Oct 2021 – Oct 2023 · St. Louis, MO</div>
+        </div>
+        <div class="tl-project">Clinical NLP Platform, Population Health ML &amp; Healthcare Data Engineering</div>
+        <ul class="tl-bullets">
+          <li>Contributed to clinical NLP pipelines using <strong>Hugging Face Transformers and spaCy</strong> to extract structured clinical entities from physician notes.</li>
+          <li>Helped develop member risk stratification and readmission prediction models using <strong>LightGBM with SHAP</strong> explainability.</li>
+          <li>Worked on ETL pipelines on <strong>Azure Data Factory and Databricks Delta Lake</strong>, harmonizing HL7 FHIR, EDI 837/835, and pharmacy claims data.</li>
+          <li>Helped integrate <strong>Apache Kafka</strong> for real-time streaming, moving from nightly batch to same-day data availability.</li>
+        </ul>
+        <div class="tl-tech"><span>Hugging Face</span><span>BERT</span><span>LightGBM</span><span>Azure ML</span><span>Kafka</span><span>Snowflake</span></div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-head">
+          <div><span class="tl-role">ML Data Engineer</span> — <span class="tl-company">Assurant</span></div>
+          <div class="tl-meta">Oct 2019 – May 2021 · New York, NY</div>
+        </div>
+        <div class="tl-project">Insurance Risk Scoring, Claims Intelligence &amp; GCP Data Lake</div>
+        <ul class="tl-bullets">
+          <li>Contributed to ML pipelines for property insurance risk scoring using <strong>Gradient Boosting</strong> with geospatial features (weather, flood zones, catastrophe history).</li>
+          <li>Helped build document classification and extraction pipelines using <strong>CNN image classification and OCR</strong> (Tesseract + LayoutLM).</li>
+          <li>Assisted in designing a <strong>GCP data lake</strong> on BigQuery and GCS with dbt transformation layers and data lineage documentation.</li>
+          <li>Worked on anomaly detection for claims triage using <strong>Isolation Forest and LSTM autoencoders</strong>.</li>
+        </ul>
+        <div class="tl-tech"><span>GCP BigQuery</span><span>dbt</span><span>Kubeflow</span><span>LSTM</span><span>Great Expectations</span></div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-head">
+          <div><span class="tl-role">Data Engineer (Python)</span> — <span class="tl-company">Finish Line Staffing Services</span></div>
+          <div class="tl-meta">Oct 2017 – Jul 2019 · Indianapolis, IN</div>
+        </div>
+        <div class="tl-project">Retail Data Platform — Demand Forecasting, Recommendation Engine &amp; AWS Migration</div>
+        <ul class="tl-bullets">
+          <li>Built Python-based ETL pipelines using <strong>Apache Spark and Airflow</strong> to consolidate e-commerce, POS, and inventory data into AWS Redshift.</li>
+          <li>Helped develop demand forecasting models using <strong>ARIMA and Facebook Prophet</strong> for SKU-level stock planning.</li>
+          <li>Contributed to a product recommendation engine using <strong>collaborative filtering (ALS)</strong> on AWS EMR.</li>
+          <li>Participated in migrating on-premises Hadoop workloads to <strong>AWS (S3, EMR, Glue)</strong>.</li>
+        </ul>
+        <div class="tl-tech"><span>PySpark</span><span>Airflow</span><span>ARIMA</span><span>AWS EMR</span><span>Redshift</span><span>Tableau</span></div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-head">
+          <div><span class="tl-role">Data Engineer (Python)</span> — <span class="tl-company">eNoah iSolution India P Limited</span></div>
+          <div class="tl-meta">May 2016 – Aug 2017 · Chennai, India</div>
+        </div>
+        <div class="tl-project">Healthcare Data Integration &amp; Automated Reporting Pipeline</div>
+        <ul class="tl-bullets">
+          <li>Built Python-based data ingestion and transformation pipelines for healthcare BPO clients.</li>
+          <li>Automated web data extraction using <strong>BeautifulSoup and Scrapy</strong>, cutting data lag from days to same-day.</li>
+          <li>Built RESTful API integrations using <strong>Flask</strong> to connect client EHR/CRM systems.</li>
+          <li>Automated monthly/quarterly KPI reporting using <strong>Matplotlib and openpyxl</strong>.</li>
+        </ul>
+        <div class="tl-tech"><span>Python</span><span>Flask</span><span>Pandas</span><span>MySQL</span><span>PostgreSQL</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <span class="sec-kicker">Foundations</span>
+    </div>
+    <h2 class="sec-title reveal" style="margin-bottom:36px;">Education</h2>
+    <div class="edu-card reveal">
+      <div>
+        <h3>Bachelor of Technology (B.Tech) in Computer Science</h3>
+        <div class="school">Vasireddy Venkatadri Institute of Technology</div>
+        <div class="loc">Andhra Pradesh, India</div>
+      </div>
+      <div class="edu-year">2016</div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <span class="sec-kicker">Let's connect</span>
+    </div>
+    <h2 class="sec-title reveal" style="margin-bottom:36px;">Get In Touch</h2>
+    <div class="contact-box reveal">
+      <h2>Let's Build Something Intelligent</h2>
+      <p>Open to conversations on AI/ML engineering, agentic systems, and data platform roles.</p>
+      <div class="contact-links">
+        <a href="mailto:pravallikad1194@gmail.com" class="btn btn-primary">Email Me</a>
+        <a href="tel:+14045495788" class="btn btn-outline">+1 404-549-5788</a>
+        <a href="https://linkedin.com/in/pravallikadasari" target="_blank" class="btn btn-outline">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2026 <span>Pravallika Dasari</span>. Built with intent.
+  </footer>
+</div>
+
+<script>
+  // Starfield canvas
+  const canvas = document.getElementById('stars');
+  const ctx = canvas.getContext('2d');
+  let w, h, stars = [];
+  function resize(){
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = document.body.scrollHeight;
+  }
+  function initStars(){
+    stars = [];
+    const count = Math.floor((w*h)/9000);
+    for(let i=0;i<count;i++){
+      stars.push({
+        x: Math.random()*w,
+        y: Math.random()*h,
+        r: Math.random()*1.3 + 0.2,
+        a: Math.random(),
+        d: (Math.random()*0.015)+0.003
+      });
+    }
+  }
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    ctx.fillStyle = '#050508';
+    ctx.fillRect(0,0,w,h);
+    for(const s of stars){
+      s.a += s.d;
+      const alpha = Math.abs(Math.sin(s.a));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(244,185,66,${alpha*0.8})`;
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize', ()=>{ resize(); initStars(); });
+  resize(); initStars(); draw();
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('in'); }
+    });
+  }, {threshold:0.15});
+  document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>
